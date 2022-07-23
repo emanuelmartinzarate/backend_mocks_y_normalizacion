@@ -11,7 +11,11 @@ function createProductMock(){
 }
 
 router.get('/', function(req, res, next) {
-  res.json(createProductMock())
+  const productsFacker = []
+  for(let i=0; i<5; i++){
+    productsFacker.push(createProductMock())
+  }
+  res.json(productsFacker)
 });
 
 module.exports = router;
