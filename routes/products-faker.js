@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const options = require('../options/mariaDB')
-const knex = require('knex')(options)
 const {faker} = require('@faker-js/faker')
 
 function createProductMock(){
