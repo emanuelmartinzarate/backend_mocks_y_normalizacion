@@ -6,6 +6,7 @@ const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
 const productsRouter = require('./routes/products');
+const productsFakerRouter = require('./routes/products-faker');
 const chatRouter = require('./routes/chat');
 
 const app = express();
@@ -22,6 +23,7 @@ app.use('/static',express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/api/products', productsRouter);
+app.use('/api/productsfaker', productsFakerRouter);
 app.use('/api/chat', chatRouter);
 
 
