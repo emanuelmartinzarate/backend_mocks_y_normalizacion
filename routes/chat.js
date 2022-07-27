@@ -2,10 +2,13 @@ const express = require('express');
 const router = express.Router();
 const options = require('../options/sqlite')
 const knex = require('knex')(options)
-
+const normalizr = require('normalizr')
+const normalize = normalizr.normalize
+const denormalize = normalizr.denormalize
+const schema = normalizr.schema;
 
 router.get('/', function(req, res, next) {
-  knex.from('messages')
+  knex.from('message')
             .then( data => {
                 res.json(data)              
             })
@@ -13,7 +16,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:id', function(req, res, next) {
-  knex('messages')
+  knex('message')
     .where({ id:  parseInt(req.params.id) })
     .then((data) => {
       if(data.length == 0){
@@ -25,17 +28,26 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  const message =req.body
-  knex('messages').insert(message)
-        .then((data) =>{
-          message.id = data[0]
-          res.json(message)
-        })
-        .catch(err => console.log(err))
+  const data =req.body
+  const author = new schema.Entity('author')
+  const message = new schema.Entity('message',{
+    author:author
+  })
+
+  const normalizeData = normalize(data,message)
+  console.log(normalizeData)
+
+
+  // knex('message').insert(message)
+  //       .then((data) =>{
+  //         message.id = data[0]
+  //         res.json(message)
+  //       })
+  //       .catch(err => console.log(err))
 });
 
 router.put('/', function(req, res, next) {
-  knex('messages')
+  knex('message')
   .where({ id: parseInt(req.body.id) })
   .update({
     msn: req.body.msn,
@@ -51,7 +63,7 @@ router.put('/', function(req, res, next) {
 });
 
 router.delete('/:id', function(req, res, next) {
-  knex('messages')
+  knex('message')
   .where({ id: parseInt(req.params.id) })
   .del()
   .then(() => { res.json(`El mensaje con id ${req.params.id} fue eliminado`); })

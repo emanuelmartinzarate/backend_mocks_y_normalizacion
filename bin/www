@@ -119,10 +119,17 @@ io.on('connection', socket => {
   })
 
   socket.on('chat-in', data => {
-
+    console.log(`data: ${data}`)
     const dataOut = {
-        msn: data.msn,
-        username: data.username
+        author:{
+          email: data.email,
+          authorName: data.authorName,
+          authorLastName: data.authorLastName,
+          age: data.age,
+          alias: data.alias,
+          avatar: data.avatar
+        },
+        message: data.msn
     }
     console.log(dataOut)
 

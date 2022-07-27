@@ -24,9 +24,22 @@ btn.onclick = e => {
 btnSend.onclick = e => {
     e.preventDefault() 
 
+    const email = document.getElementById("email").value
+    const authorName = document.getElementById("authorName").value
+    const authorLastName = document.getElementById("authorLastName").value
+    const age = document.getElementById("age").value
+    const alias = document.getElementById("alias").value
+    const avatar = document.getElementById("avatar").value
     const msn = document.getElementById("msn").value
 
-    socket.emit('chat-in', { msn, username})
+    socket.emit('chat-in', { 
+        email,
+        authorName,
+        authorLastName,
+        age,
+        alias,
+        avatar,
+        msn})
 }
 
 socket.on('show', products => {
